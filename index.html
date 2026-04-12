@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Shlok | Discord Bot Developer</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', sans-serif; background: #0d1117; color: #e6edf3; }
+
+    nav {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 2rem; background: #161b22;
+      border-bottom: 0.5px solid #30363d;
+      position: sticky; top: 0; z-index: 100;
+    }
+    .logo { font-size: 18px; font-weight: 600; color: #7c6af7; letter-spacing: 0.5px; }
+    .nav-links { display: flex; gap: 1.5rem; }
+    .nav-links a { font-size: 13px; color: #8b949e; text-decoration: none; cursor: pointer; transition: color 0.2s; }
+    .nav-links a:hover { color: #e6edf3; }
+
+    .hero {
+      padding: 5rem 2rem 4rem; text-align: center;
+      background: #161b22;
+      border-bottom: 0.5px solid #30363d;
+    }
+    .hero-badge {
+      display: inline-block; background: #1f2937; color: #7c6af7;
+      font-size: 12px; padding: 4px 14px; border-radius: 20px;
+      border: 0.5px solid #7c6af7; margin-bottom: 1.2rem;
+    }
+    .hero h1 { font-size: 38px; font-weight: 600; color: #e6edf3; margin-bottom: 0.6rem; line-height: 1.2; }
+    .hero h1 span { color: #7c6af7; }
+    .hero p { font-size: 16px; color: #8b949e; max-width: 500px; margin: 0 auto 2rem; line-height: 1.7; }
+    .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .btn-primary {
+      background: #7c6af7; color: #fff; border: none;
+      padding: 11px 26px; border-radius: 8px; font-size: 14px;
+      cursor: pointer; font-weight: 500; text-decoration: none;
+    }
+    .btn-primary:hover { background: #6a58e0; }
+    .btn-outline {
+      background: transparent; color: #7c6af7;
+      border: 0.5px solid #7c6af7; padding: 11px 26px;
+      border-radius: 8px; font-size: 14px; cursor: pointer;
+      font-weight: 500; text-decoration: none;
+    }
+    .btn-outline:hover { background: #1e1a3a; }
+
+    .section { padding: 3rem 2rem; max-width: 960px; margin: 0 auto; }
+    .section-title {
+      font-size: 11px; font-weight: 600; color: #7c6af7;
+      text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 0.4rem;
+    }
+    .section-heading { font-size: 24px; font-weight: 600; color: #e6edf3; margin-bottom: 1.8rem; }
+    .divider { border: none; border-top: 0.5px solid #30363d; }
+
+    .bots-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+    .bot-card {
+      background: #161b22; border: 0.5px solid #30363d;
+      border-radius: 12px; padding: 1.4rem; transition: border-color 0.2s;
+    }
+    .bot-card:hover { border-color: #7c6af7; }
+    .bot-icon {
+      width: 42px; height: 42px; border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 20px; margin-bottom: 12px;
+    }
+    .bot-icon.purple { background: #1e1a3a; }
+    .bot-icon.green  { background: #0d2018; }
+    .bot-icon.blue   { background: #0a1929; }
+    .bot-name { font-size: 15px; font-weight: 600; color: #e6edf3; margin-bottom: 6px; }
+    .bot-desc { font-size: 13px; color: #8b949e; line-height: 1.6; margin-bottom: 12px; }
+    .bot-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .tag { font-size: 11px; background: #21262d; color: #8b949e; padding: 3px 9px; border-radius: 20px; }
+
+    .pricing-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; }
+    .plan-card {
+      background: #161b22; border: 0.5px solid #30363d;
+      border-radius: 12px; padding: 1.6rem;
+    }
+    .plan-card.featured { border: 1.5px solid #7c6af7; }
+    .plan-badge {
+      font-size: 11px; background: #1e1a3a; color: #7c6af7;
+      padding: 3px 10px; border-radius: 20px;
+      display: inline-block; margin-bottom: 12px;
+    }
+    .plan-name { font-size: 16px; font-weight: 600; color: #e6edf3; margin-bottom: 6px; }
+    .plan-price { font-size: 26px; font-weight: 600; color: #7c6af7; margin-bottom: 6px; }
+    .plan-price span { font-size: 13px; color: #8b949e; font-weight: 400; }
+    .plan-desc { font-size: 13px; color: #8b949e; margin-bottom: 14px; line-height: 1.5; }
+    .plan-features { list-style: none; }
+    .plan-features li {
+      font-size: 13px; color: #8b949e; padding: 5px 0;
+      border-bottom: 0.5px solid #21262d;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .plan-features li:last-child { border: none; }
+    .check { color: #3fb950; font-size: 15px; }
+
+    .contact-card {
+      background: #161b22; border: 0.5px solid #30363d;
+      border-radius: 12px; padding: 2rem; max-width: 500px;
+    }
+    .contact-row { margin-bottom: 14px; }
+    .contact-label { font-size: 12px; color: #8b949e; margin-bottom: 5px; }
+    .contact-input {
+      width: 100%; background: #0d1117; border: 0.5px solid #30363d;
+      border-radius: 8px; padding: 9px 13px; font-size: 13px;
+      color: #e6edf3; font-family: 'Segoe UI', sans-serif; outline: none;
+    }
+    .contact-input:focus { border-color: #7c6af7; }
+    textarea.contact-input { resize: vertical; min-height: 90px; }
+    .contact-btn {
+      background: #7c6af7; color: #fff; border: none;
+      padding: 11px 24px; border-radius: 8px; font-size: 13px;
+      cursor: pointer; font-weight: 500; margin-top: 6px;
+    }
+    .contact-btn:hover { background: #6a58e0; }
+    .contact-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    .discord-cta {
+      display: inline-flex; align-items: center; gap: 10px;
+      background: #5865F2; color: #fff; text-decoration: none;
+      padding: 12px 22px; border-radius: 10px; font-size: 14px;
+      font-weight: 500; transition: background 0.2s;
+    }
+    .discord-cta:hover { background: #4752c4; }
+
+    .socials { display: flex; gap: 12px; margin-top: 1.5rem; }
+    .social-link {
+      font-size: 13px; color: #8b949e; text-decoration: none;
+      background: #21262d; padding: 6px 14px; border-radius: 20px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .social-link:hover { color: #7c6af7; background: #1e1a3a; }
+
+    footer {
+      background: #161b22; border-top: 0.5px solid #30363d;
+      padding: 1.4rem 2rem; text-align: center;
+    }
+    footer p { font-size: 13px; color: #8b949e; }
+    footer span { color: #7c6af7; }
+
+    @media (max-width: 600px) {
+      .hero h1 { font-size: 26px; }
+      nav { padding: 1rem; }
+      .nav-links { gap: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <script src="script.js"></script>
+  <nav>
+    <div class="logo">{ Shlok Desai }</div>
+    <div class="nav-links">
+      <a href="#projects">projects</a>
+      <a href="#pricing">pricing</a>
+      <a href="#contact">contact</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-badge">Discord Bot Developer</div>
+    <h1>Building bots that make<br><span>servers come alive</span></h1>
+    <p>Custom Discord bots for moderation, games, and automation — tailored to your community's needs.</p>
+    <div class="hero-btns">
+      <a href="#contact" class="btn-primary">Hire me</a>
+      <a href="#projects" class="btn-outline">View projects</a>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <hr class="divider" />
+  <div class="section" id="projects">
+    <div class="section-title">Projects</div>
+    <div class="section-heading">My bots</div>
+    <div class="bots-grid">
+
+      <div class="bot-card">
+        <div class="bot-icon purple">🛡️</div>
+        <div class="bot-name">GuardBot</div>
+        <div class="bot-desc">Full-featured auto-moderation with spam detection, word filters, and logging.</div>
+        <div class="bot-tags">
+          <span class="tag">moderation</span>
+          <span class="tag">auto-mod</span>
+          <span class="tag">logs</span>
+        </div>
+      </div>
+
+      <div class="bot-card">
+        <div class="bot-icon green">🎮</div>
+        <div class="bot-name">ArenaBot</div>
+        <div class="bot-desc">Mini-games, trivia, leaderboards, and a full economy system for your server.</div>
+        <div class="bot-tags">
+          <span class="tag">games</span>
+          <span class="tag">economy</span>
+          <span class="tag">trivia</span>
+        </div>
+      </div>
+
+      <div class="bot-card">
+        <div class="bot-icon blue">⚙️</div>
+        <div class="bot-name">CommandKit</div>
+        <div class="bot-desc">Fully custom slash commands, role menus, embeds and server utilities.</div>
+        <div class="bot-tags">
+          <span class="tag">commands</span>
+          <span class="tag">roles</span>
+          <span class="tag">utility</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Pricing -->
+  <hr class="divider" />
+  <div class="section" id="pricing">
+    <div class="section-title">Pricing</div>
+    <div class="section-heading">Simple packages</div>
+    <div class="pricing-grid">
+
+      <div class="plan-card">
+        <div class="plan-name">Starter</div>
+        <div class="plan-price">₹1,500 <span>one-time</span></div>
+        <div class="plan-desc">Perfect for small servers needing the basics.</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Basic mod commands</li>
+          <li><span class="check">✓</span> Welcome messages</li>
+          <li><span class="check">✓</span> 5 custom commands</li>
+          <li><span class="check">✓</span> 3 days support</li>
+        </ul>
+      </div>
+
+      <div class="plan-card featured">
+        <div class="plan-badge">Most popular</div>
+        <div class="plan-name">Pro</div>
+        <div class="plan-price">₹5,000 <span>one-time</span></div>
+        <div class="plan-desc">Great for growing communities.</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Full auto-moderation</li>
+          <li><span class="check">✓</span> Mini-games + economy</li>
+          <li><span class="check">✓</span> Unlimited commands</li>
+          <li><span class="check">✓</span> 14 days support</li>
+        </ul>
+      </div>
+
+      <div class="plan-card">
+        <div class="plan-name">Custom</div>
+        <div class="plan-price">₹10,000+ <span>one-time</span></div>
+        <div class="plan-desc">Fully tailored to your server's needs.</div>
+        <ul class="plan-features">
+          <li><span class="check">✓</span> Everything in Pro</li>
+          <li><span class="check">✓</span> API integrations</li>
+          <li><span class="check">✓</span> Dashboard panel</li>
+          <li><span class="check">✓</span> 30 days support</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Contact -->
+  <hr class="divider" />
+  <div class="section" id="contact">
+    <div class="section-title">Contact</div>
+    <div class="section-heading">Hire me</div>
+
+    <!-- Discord quick contact -->
+    <a href="https://discord.com/users/1343958597910134815" target="_blank" class="discord-cta">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+      Message me on Discord
+    </a>
+
+    <div style="display:flex; align-items:center; gap:12px; margin: 1.5rem 0;">
+      <div style="flex:1; height:0.5px; background:#30363d;"></div>
+      <span style="font-size:12px; color:#8b949e;">or fill the form</span>
+      <div style="flex:1; height:0.5px; background:#30363d;"></div>
+    </div>
+
+    <!-- Web3Forms integrated contact form -->
+    <div class="contact-card">
+      <form id="contact-form" action="https://api.web3forms.com/submit" method="POST">
+
+        <!-- Replace with your Web3Forms access key from web3forms.com -->
+        <input type="hidden" name="access_key" value="64341b72-99f3-4b23-ae0b-e0f6a6223812" />
+        <input type="hidden" name="subject" value="New hire request from portfolio" />
+        <input type="hidden" name="from_name" value="Portfolio Contact" />
+        <input type="checkbox" name="botcheck" style="display:none;" />
+
+        <div class="contact-row">
+          <div class="contact-label">Your name</div>
+          <input class="contact-input" type="text" name="name" placeholder="Server owner name" required />
+        </div>
+        <div class="contact-row">
+          <div class="contact-label">Discord tag</div>
+          <input class="contact-input" type="text" name="discord" placeholder="username#0000" required />
+        </div>
+        <div class="contact-row">
+          <div class="contact-label">What do you need?</div>
+          <textarea class="contact-input" name="message" placeholder="Tell me about your server and what you're looking for..." required></textarea>
+        </div>
+        <button type="submit" class="contact-btn" id="submit-btn">Send message</button>
+
+        <!-- Success / error messages -->
+        <div id="form-success" style="display:none; margin-top:12px; font-size:13px; color:#3fb950;">
+          Message sent! I'll get back to you soon.
+        </div>
+        <div id="form-error" style="display:none; margin-top:12px; font-size:13px; color:#f85149;">
+          Something went wrong. Please try again or message me on Discord.
+        </div>
+      </form>
+    </div>
+
+    <div class="socials">
+      <a href="https://discord.com/users/YOUR_DISCORD_USER_ID" target="_blank" class="social-link">Discord</a>
+      <a href="https://github.com/YOUR_USERNAME" target="_blank" class="social-link">GitHub</a>
+      <a href="https://fiverr.com/YOUR_USERNAME" target="_blank" class="social-link">Fiverr</a>
+      <a href="https://top.gg/user/YOUR_USER_ID" target="_blank" class="social-link">top.gg</a>
+    </div>
+  </div>
+
+  <footer>
+    <p>Built by <span>Shlok </span>  · Discord Bot Developer</p>
+  </footer>
+
+  <script>
+    const form = document.getElementById('contact-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const successMsg = document.getElementById('form-success');
+    const errorMsg = document.getElementById('form-error');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      submitBtn.textContent = 'Sending...';
+      submitBtn.disabled = true;
+
+      const formData = new FormData(form);
+      try {
+        const res = await fetch('https://api.web3forms.com/submit', {
+          method: 'POST',
+          body: formData
+        });
+        const data = await res.json();
+        if (data.success) {
+          successMsg.style.display = 'block';
+          errorMsg.style.display = 'none';
+          form.reset();
+          submitBtn.textContent = 'Sent!';
+        } else {
+          throw new Error('Failed');
+        }
+      } catch {
+        errorMsg.style.display = 'block';
+        successMsg.style.display = 'none';
+        submitBtn.textContent = 'Send message';
+        submitBtn.disabled = false;
+      }
+    });
+  </script>
+
+</body>
+</html
